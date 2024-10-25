@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AddTasks from "./components/AddTasks";
 import Tasks from "./components/Tasks";
+import {v4} from 'uuid'   //Biblioteca ára gerar ID aleatoriamente 
 
 function App() {
   const [tasks, setTasks] = useState([
@@ -44,11 +45,21 @@ function App() {
     setTasks(newTasks);
   }
 
+  function onAddTaskSubmit (title, description){
+    const newTask = {
+      id: v4(),    //Ou seja o ID vai ser único pois sempre vai acrescentar mais um
+      title,
+      description,
+      isCompleted: false,
+    };
+    setTasks([...tasks, newTask]) // os tres pontos serve pra colocar tudo que esta la dentro do tasks
+  }
+
   return (
     <div className="w-screen h-screen bg-slate-500 flex justify-center p-6">
       <div className="w-[500px] space-y-4">
         <h1 className="text-3xl text-slate-100 font-bold text-center">Gerenciador de tarefas</h1>
-        <AddTasks />
+        <AddTasks onAddTaskSubmit={onAddTaskSubmit} />
         <Tasks tasks={tasks}
           onTaskClick={onTaskClick}
           onDeleteTaskClick={onDeleteTaskClick}/>
